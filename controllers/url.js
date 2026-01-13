@@ -6,9 +6,23 @@ async function handleGetALLURL(req,res){
     return res.send(allURLs);
 }
 
+async function handleCreateURL(req,res) {
+    const shortID = shortid.generate();
+    const body = req.body;
+
+    const result = await URL.create({
+        shortid: shortID,
+        redirectURL: body.redirectURL,
+        visitHistory: []
+    })
+    
+    res.send("Short id generated successfully")
+}
+
 
 
 
 module.exports = {
-    handleGetALLURL
+    handleGetALLURL,
+    handleCreateURL
 }
