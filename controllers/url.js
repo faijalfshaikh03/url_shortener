@@ -1,4 +1,5 @@
 const URL = require('../models/url')
+const shortid = require('shortid')
 
 async function handleGetALLURL(req,res){
     const allURLs = await URL.find({});
@@ -20,9 +21,22 @@ async function handleCreateURL(req,res) {
 }
 
 
+async function getURL(req,res) {
+    const result = await URL.findOneAndUpdate({shortid:req.params.id}, {
+        $push:{
+            visitHistory: {
+                timeStamps: Date.now()
+            }
+        }
+    })
+
+    res.redirect(result.redirectURL);
+}
+
 
 
 module.exports = {
     handleGetALLURL,
-    handleCreateURL
+    handleCreateURL,
+    getURL
 }
